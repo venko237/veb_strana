@@ -1,14 +1,14 @@
-
-FROM node:22-alpine
+FROM oven/bun:1-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+COPY package.json bun.lock bunfig.toml ./
+
+RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN npm run build
+RUN bun run build
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
@@ -18,4 +18,4 @@ ENV NITRO_PORT=8080
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["bun", "run", ".output/server/index.mjs"]
